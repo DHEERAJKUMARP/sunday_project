@@ -25,5 +25,11 @@ Route::middleware(['auth'])->group(function () {
         return view('home');
     });
 
+
+
+    
+    //OFFICE TIME
+    Route::get('/office_time', [App\Http\Controllers\office_time\dashboardController::class, 'index'])->name('office_time');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

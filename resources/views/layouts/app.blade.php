@@ -15,7 +15,7 @@
             <nav>
                 <ul class="flex space-x-4">
                     <li><a href="/dashboard" class="hover:underline">Home</a></li>
-                    <li><a href="/projects" class="hover:underline">Projects</a></li>
+                    <li><a href="/office_time" class="hover:underline">Office Time</a></li>
                     <li><a href="/contact" class="hover:underline">Contact</a></li>
                 </ul>
             </nav>
