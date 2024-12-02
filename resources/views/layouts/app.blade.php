@@ -14,7 +14,7 @@
             <h1 class="text-xl font-bold">My Dashboard</h1>
             <nav>
                 <ul class="flex space-x-4">
-                    <li><a href="/" class="hover:underline">Home</a></li>
+                    <li><a href="/dashboard" class="hover:underline">Home</a></li>
                     <li><a href="/projects" class="hover:underline">Projects</a></li>
                     <li><a href="/contact" class="hover:underline">Contact</a></li>
                 </ul>
@@ -44,18 +44,39 @@
     </footer>
 
     <script>
-        // Toggle dark mode
-        function toggleDarkMode() {
-            const isDarkMode = document.documentElement.classList.toggle('dark');
-            const button = document.getElementById('mode-toggle');
-// Save the mode preference in localStorage
-        localStorage.setItem('darkMode', isDarkMode);
-            if (isDarkMode) {
-                button.textContent = 'Switch to Light Mode'; // Dark mode is enabled
-            } else {
-                button.textContent = 'Switch to Dark Mode'; // Light mode is enabled
-            }
-        }
+       document.addEventListener('DOMContentLoaded', () => {
+    const isDarkModeStored = localStorage.getItem('darkMode');
+    const isDarkMode = isDarkModeStored === 'true';
+    
+   
+
+    // Apply the stored preference
+    if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('mode-toggle').textContent = 'Switch to Light Mode';
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('mode-toggle').textContent = 'Switch to Dark Mode';
+    }
+});
+
+function toggleDarkMode() {
+    const isDarkMode = document.documentElement.classList.toggle('dark');
+    const button = document.getElementById('mode-toggle');
+
+    // Save the mode preference in localStorage
+    localStorage.setItem('darkMode', isDarkMode);
+
+    
+
+    // Update button text
+    if (isDarkMode) {
+        button.textContent = 'Switch to Light Mode';
+    } else {
+        button.textContent = 'Switch to Dark Mode';
+    }
+}
+
     </script>
 
 </body>
