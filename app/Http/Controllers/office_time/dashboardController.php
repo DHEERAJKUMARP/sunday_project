@@ -24,19 +24,21 @@ class dashboardController extends Controller
     // Validate the incoming request data
     $validated = $request->validate([
         'date' => 'required|date',
-        'checkInTime' => 'required|date_format:H:i',
-        'checkOutTime' => 'required|date_format:H:i',
+        'checkInTime' => 'nullable|date_format:H:i',
+        'checkOutTime' => 'nullable|date_format:H:i',
         'dayType' => 'required|in:leave,compOff,work',
         'leaveType' => 'nullable|in:sick,vacation,personal',
         'leaveDuration' => 'nullable|in:full,half',
         'compOffDate' => 'nullable|date',
         'compDuration' => 'nullable|in:full,half',
     ]);
+    Log::info($validated);
 
     // Fetch the request values and store them in variables
     $date = $validated['date'];
-    $checkInTime = $validated['checkInTime'];
-    $checkOutTime = $validated['checkOutTime'];
+
+    $checkInTime = $request->input('checkInTime');
+    $checkOutTime = $request->input('checkOutTime');
     $dayType = $validated['dayType'];
     $leaveType = $validated['leaveType'] ?? null; // Nullable value
     $leaveDuration = $validated['leaveDuration'] ?? null; // Nullable value
