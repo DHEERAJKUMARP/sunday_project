@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\office_time\dashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,8 @@ Route::middleware(['auth'])->group(function () {
 
     
     //OFFICE TIME
-    Route::get('/office_time', [App\Http\Controllers\office_time\dashboardController::class, 'index'])->name('office_time');
+    Route::get('/office_time', [dashboardController::class, 'index'])->name('office_time');
+    
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
