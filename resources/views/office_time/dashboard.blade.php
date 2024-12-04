@@ -9,7 +9,9 @@
     <h2 class="text-2xl font-semibold mb-6">Enter Time Entry Details</h2>
 
     <!-- Form to input entry details -->
-    <form id="entryForm" class="space-y-4" action="{{ route('office_time.store') }}" method="POST">
+    <form id="entryForm" class="space-y-4" action="{{ route('office_time.create') }}" method="POST">
+
+    @csrf <!-- Include this to add the CSRF token -->
       <!-- First Row: Date, Check-In, and Check-Out -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <!-- Date -->

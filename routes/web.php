@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     
     //OFFICE TIME
     Route::get('/office_time', [dashboardController::class, 'index'])->name('office_time');
+    Route::post('/create', [dashboardController::class, 'create'])->name('office_time.create');
     
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
