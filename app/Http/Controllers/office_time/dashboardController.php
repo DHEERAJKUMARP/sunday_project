@@ -13,4 +13,5 @@ class dashboardController extends Controller
         // Return the view with the correct path
         return view('office_time.dashboard');
     }
+    //getting the data
 }
