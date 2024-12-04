@@ -38,7 +38,19 @@
       @error('dayType') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
-
+    <!-- Date and Time for Work -->
+    <div id="workFields" class="hidden">
+      <div>
+        <label for="checkInTime" class="block text-lg font-medium">Check-In Time</label>
+        <input type="time" id="checkInTime" name="checkInTimeWork" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600" >
+        @error('checkInTime') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+      </div>
+      <div>
+        <label for="checkOutTime" class="block text-lg font-medium">Check-Out Time</label>
+        <input type="time" id="checkOutTime" name="checkOutTimeWork" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600" >
+        @error('checkOutTime') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+      </div>
+    </div>
 
     <!-- Leave Type -->
     <div id="leaveFields" class="hidden">
@@ -93,18 +105,30 @@
         @error('compDuration') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
       </div>
     </div>
-   
+    <!-- Leave Time Fields (show only when Half Day is selected) -->
+<div id="leaveTimeFields" class="hidden">
+<div>
+    <label for="checkInTime" class="block text-lg font-medium"> Check-In Time</label>
+    <input type="time" id="checkInTime" name="checkInTimeLeave" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600">
+    @error('checkInTime') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+  </div>
+  <div>
+    <label for="checkOutTime" class="block text-lg font-medium">Check-Out Time</label>
+    <input type="time" id="checkOutTime" name="checkOutTimeLeave" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600">
+    @error('checkOutTime') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+  </div>
+</div>
 
 <!-- Compensatory Off Time Fields (show only when Half Day is selected) -->
 <div id="compTimeFields" class="hidden">
   <div>
     <label for="checkInTime" class="block text-lg font-medium">Comp Off Check-In Time</label>
-    <input type="time" id="checkInTime" name="checkInTime" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600">
+    <input type="time" id="checkInTime" name="checkInTimeComp" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600">
     @error('checkInTime') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
   </div>
   <div>
     <label for="checkOutTime" class="block text-lg font-medium">Comp Off Check-Out Time</label>
-    <input type="time" id="checkOutTime" name="checkOutTime" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600">
+    <input type="time" id="checkOutTime" name="checkOutTimeComp" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600">
     @error('checkOutTime') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
   </div>
 </div>

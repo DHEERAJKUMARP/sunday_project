@@ -24,8 +24,6 @@ class dashboardController extends Controller
     // Validate the incoming request data
     $validated = $request->validate([
         'date' => 'required|date',
-        'checkInTime' => 'nullable|date_format:H:i',
-        'checkOutTime' => 'nullable|date_format:H:i',
         'dayType' => 'required|in:leave,compOff,work',
         'leaveType' => 'nullable|in:sick,vacation,personal',
         'leaveDuration' => 'nullable|in:full,half',
@@ -34,11 +32,31 @@ class dashboardController extends Controller
     ]);
     Log::info($validated);
 
+
+    // Inside your controller method where you handle the form submission
+
+$checkInTime = null;
+$checkOutTime = null;
+
+// Check which set of fields has data
+if ($request->has('checkInTimeWork') && $request->has('checkOutTimeWork')) {
+    // If Work check-in and check-out are filled, store them
+    $checkInTime = $request->input('checkInTimeWork');
+    $checkOutTime = $request->input('checkOutTimeWork');
+} elseif ($request->has('checkInTimeLeave') && $request->has('checkOutTimeLeave')) {
+    // If Leave check-in and check-out are filled, store them
+    $checkInTime = $request->input('checkInTimeLeave');
+    $checkOutTime = $request->input('checkOutTimeLeave');
+} elseif ($request->has('checkInTimeComp') && $request->has('checkOutTimeComp')) {
+    // If Comp Off check-in and check-out are filled, store them
+    $checkInTime = $request->input('checkInTimeComp');
+    $checkOutTime = $request->input('checkOutTimeComp');
+}
+
     // Fetch the request values and store them in variables
     $date = $validated['date'];
-
-    $checkInTime = $request->input('checkInTime');
-    $checkOutTime = $request->input('checkOutTime');
+    $checkInTime = $checkInTime ?? null;
+    $checkOutTime = $checkOutTime ?? null;
     $dayType = $validated['dayType'];
     $leaveType = $validated['leaveType'] ?? null; // Nullable value
     $leaveDuration = $validated['leaveDuration'] ?? null; // Nullable value
