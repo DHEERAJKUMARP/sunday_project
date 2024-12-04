@@ -1,66 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# **Feature: Dynamic Check-In and Check-Out Time Handling**
 
-## About Laravel
+## **Overview**
+This feature allows the user to submit their check-in and check-out times based on their work type: **Work**, **Leave**, or **Compensatory Off**. The form dynamically displays relevant fields and sends the appropriate data to the server, storing the check-in and check-out times accordingly.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **Behavior**
+1. **Work Type**: When the user selects the "Work" type, the form displays check-in and check-out time fields. The values entered in these fields will be stored in the database.
+2. **Leave Type**: When the user selects "Half Day" (Leave type), the form displays check-in and check-out time fields specific to leave. These values will be stored in the database.
+3. **Compensatory Off**: If the user selects compensatory off, the form shows check-in and check-out time fields specifically for comp off. These values will be stored in the database.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### **Dynamic Field Visibility**
+- Based on the selected type, only the relevant fields for check-in and check-out time are shown.
+  - For **Work**: `checkInTimeWork`, `checkOutTimeWork`
+  - For **Leave**: `checkInTimeLeave`, `checkOutTimeLeave`
+  - For **Compensatory Off**: `checkInTimeComp`, `checkOutTimeComp`
+- If no time is provided for a specific category, the server stores `null` for the missing values.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## **Form Fields**
+### **Work Time Fields** (Visible only when "Work" is selected)
+- **Check-In Time**: A `time` input for entering the work start time.
+- **Check-Out Time**: A `time` input for entering the work end time.
 
-## Learning Laravel
+### **Leave Time Fields** (Visible only when "Leave" is selected)
+- **Check-In Time**: A `time` input for entering the leave start time.
+- **Check-Out Time**: A `time` input for entering the leave end time.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### **Compensatory Off Time Fields** (Visible only when "Comp Off" is selected)
+- **Comp Off Check-In Time**: A `time` input for entering the comp off start time.
+- **Comp Off Check-Out Time**: A `time` input for entering the comp off end time.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## **Backend Logic**
+The backend checks which set of time fields (Work, Leave, or Comp Off) have been provided. The logic is as follows:
+- **Work**: If both work check-in and check-out times are provided, those are stored in the database.
+- **Leave**: If leave check-in and check-out times are provided, those are stored in the database.
+- **Compensatory Off**: If compensatory off check-in and check-out times are provided, those are stored in the database.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **Null Handling**
+If no check-in or check-out time is provided for any category, the corresponding value will be set to `null` in the database.
 
-## Laravel Sponsors
+### **Example Backend Code**:
+```php
+// Inside the controller method to process the form submission
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+$checkInTime = null;
+$checkOutTime = null;
 
-### Premium Partners
+// Check which set of fields has data
+if ($request->has('checkInTimeWork') && $request->has('checkOutTimeWork')) {
+    $checkInTime = $request->input('checkInTimeWork');
+    $checkOutTime = $request->input('checkOutTimeWork');
+} elseif ($request->has('checkInTimeLeave') && $request->has('checkOutTimeLeave')) {
+    $checkInTime = $request->input('checkInTimeLeave');
+    $checkOutTime = $request->input('checkOutTimeLeave');
+} elseif ($request->has('checkInTimeComp') && $request->has('checkOutTimeComp')) {
+    $checkInTime = $request->input('checkInTimeComp');
+    $checkOutTime = $request->input('checkOutTimeComp');
+}
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+// Save the check-in and check-out times in the database
+$entry = new OfficeEntry();
+$entry->check_in_time = $checkInTime;
+$entry->check_out_time = $checkOutTime;
+$entry->save();
+```
 
-## Contributing
+## **Database Schema**
+- **Table: office_entries**
+  - **check_in_time**: Stores the check-in time (nullable).
+  - **check_out_time**: Stores the check-out time (nullable).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## **Usage**
+1. **Frontend**: The frontend will dynamically display the relevant fields based on the selected type (Work, Leave, or Comp Off). The user will fill in the required check-in and check-out times.
+2. **Backend**: The controller will process the form and store the correct check-in and check-out values based on the available data.
 
-## Code of Conduct
+## **Error Handling**
+- If a required field is missing or invalid, an error message will be displayed next to the input field.
+- The `@error` directive is used to show validation errors from the server-side.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## **Validation**
+- The `required` attribute on the check-in and check-out fields ensures that a value is provided, unless the field is dynamically hidden based on the user’s selection.
 
-## Security Vulnerabilities
+## **Conclusion**
+This feature provides a dynamic and efficient way to handle different types of time inputs (Work, Leave, and Comp Off) and ensures that only the relevant data is stored in the database, leaving other values as `null`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
