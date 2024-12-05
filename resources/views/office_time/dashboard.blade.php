@@ -163,9 +163,9 @@
       </tr>
     </thead>
     <tbody class="bg-white dark:bg-gray-900 dark:text-white">
-      @foreach($entries as $entry)
+      @foreach($entries as $index => $entry)
         <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
-          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->id }}</td>
+          <td class="border border-gray-400 dark:border-gray-600">{{ $index + 1 }}</td>
           <td class="border border-gray-400 dark:border-gray-600">{{ $entry->date }}</td>
           <td class="border border-gray-400 dark:border-gray-600">{{ ucfirst($entry->day_type) }}</td>
           <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_in_time ?? 'N/A' }}</td>
@@ -180,24 +180,26 @@
 
 
 <script>
-  $(document).ready(function() {
-    $('#entriesTable').DataTable({
-      paging: true, // Enable pagination
-      searching: true, // Enable search bar
-      info: true, // Show table information
-      ordering: true, // Enable sorting
-      responsive: true, // Make table responsive
-      language: {
-        paginate: {
-          previous: "Previous",
-          next: "Next"
-        },
-        search: "Search:",
-        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-        lengthMenu: "Show _MENU_ entries"
-      }
-    });
+$(document).ready(function() {
+  $('#entriesTable').DataTable({
+    paging: true, // Enable pagination
+    searching: true, // Enable search bar
+    info: true, // Show table information
+    ordering: true, // Enable sorting
+    responsive: true, // Make table responsive
+    language: {
+      paginate: {
+        previous: "Previous",
+        next: "Next"
+      },
+      search: "Search:",
+      info: "Showing _START_ to _END_ of _TOTAL_ entries",
+      lengthMenu: "Show _MENU_ entries"
+    },
+    order: [[1, 'desc']] // Sort by the "Date" column (index 1) in descending order
   });
+});
+
 </script>
 
 
