@@ -11,16 +11,42 @@ class dashboardController extends Controller
 {
     public function index()
     {
-      // Fetch entries for the currently authenticated user
-    $userId = Auth::id(); // Get logged-in user ID
-    $entries = OfficeEntry::where('user_id', $userId) // Filter entries by user_id
-                    ->orderBy('date', 'desc') // Optional: order by date
-                    ->get();
+        $userId = Auth::id();
+        $entries = OfficeEntry::where('user_id', $userId)->orderBy('date', 'desc')->get();
+      
+        // Ensure entries are not empty
+        if ($entries->isEmpty()) {
+            return view('office_time.dashboard', ['entries' => $entries]);  // Pass empty or handle differently
+        }
+
+
+    // Calculate working hours for each entry
+    foreach ($entries as $entry) {
+        if ($entry->check_in_time && $entry->check_out_time) {
+            // Calculate the working hours
+            $checkIn = \Carbon\Carbon::parse($entry->check_in_time);
+            $checkOut = \Carbon\Carbon::parse($entry->check_out_time);
+            $entry->working_hours = $checkIn->diffInHours($checkOut) . ' hours ' . $checkIn->diffInMinutes($checkOut) % 60 . ' minutes';
+        } else {
+            $entry->working_hours = 'N/A';
+        }
+    }
     // Pass entries to the dashboard view
     return view('office_time.dashboard', compact('entries'));
     }
     
-
+    public function edit($id) {
+        Log::info($id);
+        $entries = OfficeEntry::findOrFail($id);
+        return view('office_time.dashboard', compact('entries'));
+    }
+    
+    public function destroy($id) {
+        $entry = OfficeEntry::findOrFail($id);
+        $entry->delete();
+        return redirect()->route('entries.index')->with('success', 'Entry deleted successfully');
+    }
+    
 
     public function create(Request $request)
 {

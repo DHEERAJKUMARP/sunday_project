@@ -134,13 +134,6 @@
 </div>
 
 
-    <!-- Notes -->
-    <div>
-      <label for="notes" class="block text-lg font-medium">Notes</label>
-      <textarea id="notes" name="notes" class="w-full p-3 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600" rows="4"></textarea>
-      @error('notes') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-    </div>
-
     <!-- Submit Button -->
     <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:ring-blue-500">
       Submit
@@ -159,20 +152,42 @@
         <th class="border border-gray-400 dark:border-gray-600">Day Type</th>
         <th class="border border-gray-400 dark:border-gray-600">Check-In</th>
         <th class="border border-gray-400 dark:border-gray-600">Check-Out</th>
-        <th class="border border-gray-400 dark:border-gray-600">Notes</th>
+        <th class="border border-gray-400 dark:border-gray-600">Working Hours</th>
+        <th class="border border-gray-400 dark:border-gray-600">Action</th>
       </tr>
     </thead>
     <tbody class="bg-white dark:bg-gray-900 dark:text-white">
-      @foreach($entries as $index => $entry)
-        <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
-          <td class="border border-gray-400 dark:border-gray-600">{{ $index + 1 }}</td>
-          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->date }}</td>
-          <td class="border border-gray-400 dark:border-gray-600">{{ ucfirst($entry->day_type) }}</td>
-          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_in_time ?? 'N/A' }}</td>
-          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_out_time ?? 'N/A' }}</td>
-          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->notes ?? 'No Notes' }}</td>
-        </tr>
-      @endforeach
+    @if($entries->isEmpty())
+  <tr><td colspan="6">No entries available.</td></tr>
+@else
+  @foreach($entries as $entry)
+    <tr>
+      <td class="border border-gray-400 dark:border-gray-600">{{ $loop->iteration }}</td>
+      <td class="border border-gray-400 dark:border-gray-600">{{ $entry->date }}</td>
+      <td class="border border-gray-400 dark:border-gray-600">{{ ucfirst($entry->day_type) }}</td>
+      <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_in_time ?? 'N/A' }}</td>
+      <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_out_time ?? 'N/A' }}</td>
+      <td class="border border-gray-400 dark:border-gray-600">{{ $entry->working_hours ?? 'N/A' }}</td>
+      <td class="border border-gray-400 dark:border-gray-600">
+  <!-- Edit Button
+  <a href="{{ route('entries.edit', $entry->id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
+    Edit
+  </a> -->
+
+  <!-- Delete Button (with confirmation) -->
+  <form action="{{ route('entries.destroy', $entry->id) }}" method="POST" class="inline">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Are you sure you want to delete this entry?')">
+      Delete
+    </button>
+  </form>
+</td>
+
+    </tr>
+  @endforeach
+@endif
+
     </tbody>
   </table>
 </div>
