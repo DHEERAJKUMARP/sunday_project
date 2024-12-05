@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/office_time', [dashboardController::class, 'index'])->name('office_time');
     Route::post('/create', [dashboardController::class, 'create'])->name('office_time.create');
     Route::resource('entries', dashboardController::class);
-
+    Route::get('/office_time/timing', [dashboardController::class, 'timingIndex']);
+    Route::get('/office_time/monthly', [dashboardController::class,'monthly']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

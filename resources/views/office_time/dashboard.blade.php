@@ -4,7 +4,8 @@
 
 @section('content')
 
-
+  <!-- Include the navigation bar -->
+  @include('office_time.part.nav')
 <div class="text-gray-800 bg-white dark:text-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
   <h2 class="text-2xl font-semibold mb-6">Enter Time Entry Details</h2>
 

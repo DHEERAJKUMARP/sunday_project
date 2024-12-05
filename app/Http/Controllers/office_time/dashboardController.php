@@ -19,7 +19,7 @@ class dashboardController extends Controller
             return view('office_time.dashboard', ['entries' => $entries]);  // Pass empty or handle differently
         }
 
-
+     
     // Calculate working hours for each entry
     foreach ($entries as $entry) {
         if ($entry->check_in_time && $entry->check_out_time) {
@@ -40,7 +40,14 @@ class dashboardController extends Controller
         $entries = OfficeEntry::findOrFail($id);
         return view('office_time.dashboard', compact('entries'));
     }
-    
+    public function timingIndex()       
+    {
+return view('office_time.timing');
+}
+public function monthly()       
+{
+return view('office_time.monthly');
+}
     public function destroy($id) {
         $entry = OfficeEntry::findOrFail($id);
         $entry->delete();
