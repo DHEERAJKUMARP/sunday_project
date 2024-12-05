@@ -147,6 +147,59 @@
     </button>
   </form>
 </div>
+<!-- Entries Section -->
+<div class="mt-8 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white">
+  <h2 class="text-2xl font-semibold mb-4">Entries</h2>
+
+  <table id="entriesTable" class="w-full display bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg shadow-lg border border-gray-300 dark:border-gray-700">
+    <thead class="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white">
+      <tr>
+        <th class="border border-gray-400 dark:border-gray-600">ID</th>
+        <th class="border border-gray-400 dark:border-gray-600">Date</th>
+        <th class="border border-gray-400 dark:border-gray-600">Day Type</th>
+        <th class="border border-gray-400 dark:border-gray-600">Check-In</th>
+        <th class="border border-gray-400 dark:border-gray-600">Check-Out</th>
+        <th class="border border-gray-400 dark:border-gray-600">Notes</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white dark:bg-gray-900 dark:text-white">
+      @foreach($entries as $entry)
+        <tr class="hover:bg-gray-200 dark:hover:bg-gray-700">
+          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->id }}</td>
+          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->date }}</td>
+          <td class="border border-gray-400 dark:border-gray-600">{{ ucfirst($entry->day_type) }}</td>
+          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_in_time ?? 'N/A' }}</td>
+          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->check_out_time ?? 'N/A' }}</td>
+          <td class="border border-gray-400 dark:border-gray-600">{{ $entry->notes ?? 'No Notes' }}</td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+
+
+
+<script>
+  $(document).ready(function() {
+    $('#entriesTable').DataTable({
+      paging: true, // Enable pagination
+      searching: true, // Enable search bar
+      info: true, // Show table information
+      ordering: true, // Enable sorting
+      responsive: true, // Make table responsive
+      language: {
+        paginate: {
+          previous: "Previous",
+          next: "Next"
+        },
+        search: "Search:",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        lengthMenu: "Show _MENU_ entries"
+      }
+    });
+  });
+</script>
+
 
 
 <script>
@@ -224,6 +277,7 @@
     // Initial field visibility based on pre-selected radio button (if any)
     toggleFields();
   });
+
 </script>
 
 @endsection

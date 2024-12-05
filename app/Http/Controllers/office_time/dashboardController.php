@@ -5,13 +5,19 @@ use App\Http\Controllers\Controller;
 use App\Models\OfficeEntry; // Add the OfficeEntry model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class dashboardController extends Controller
 {
     public function index()
     {
-        // Return the view with the correct path
-        return view('office_time.dashboard');
+      // Fetch entries for the currently authenticated user
+    $userId = Auth::id(); // Get logged-in user ID
+    $entries = OfficeEntry::where('user_id', $userId) // Filter entries by user_id
+                    ->orderBy('date', 'desc') // Optional: order by date
+                    ->get();
+    // Pass entries to the dashboard view
+    return view('office_time.dashboard', compact('entries'));
     }
     
 
